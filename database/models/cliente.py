@@ -1,5 +1,5 @@
 import sqlite3
-from database.database import get_db_connection
+
 
 class Cliente():
     def __init__(self, nome, email):
@@ -8,9 +8,18 @@ class Cliente():
 
     @staticmethod
     def conectarDb():
-        conn = get_db_connection()
+        conn = sqlite3.connect('customermanager.db')
         cursor = conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, email TEXT NOT NULL)")
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, email TEXT NOT NULL)")
         conn.commit()
-    
+
         return conn, cursor
+
+    def inserirCliente(self):
+        conn = sqlite3.connect('customermanager.db')
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO clientes (nome, email) VALUES (?, ?)", (self.nome, self.email))
+        conn.commit()
+        conn.close()

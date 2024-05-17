@@ -2,11 +2,11 @@ from flask import Flask
 from configuration import configure_all
 
 
-#inicialização
+# inicialização
 app = Flask(__name__)
 
 configure_all(app)
 
 
-#execucao
+# execucao
 app.run(debug=True)
