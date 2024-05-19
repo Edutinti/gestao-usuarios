@@ -69,12 +69,9 @@ def form_cliente():
 @cliente_route.route('/<int:cliente_id>')
 def detalhe_cliente(cliente_id):
     """exibir detalhes de cliente"""
-
-    conn, cursor = Cliente.conectarDb()
-    cursor.execute('SELECT * FROM clientes WHERE id = ?', (cliente_id,))
-    cliente = cursor.fetchone()
-
-    print(cliente_id)
+    
+    Cliente.conectarDb()
+    cliente = Cliente.verCliente(cliente_id)
     
 
     return render_template('detalhe_cliente.html', cliente=cliente)
@@ -83,10 +80,7 @@ def detalhe_cliente(cliente_id):
 @cliente_route.route('/<int:cliente_id>/edit')
 def form_edit_cliente(cliente_id):
     """formulario para editar cliente"""
-    cliente = None
-    for c in CLIENTES:
-        if c['id'] == cliente_id:
-            cliente = c
+    cliente = Cliente.verCliente(cliente_id)
 
     return render_template('form_cliente.html', cliente=cliente)
 
@@ -97,14 +91,21 @@ def atualizar_cliente(cliente_id):
     cliente_editado = None
     # obter dados form de edição
     data = request.json
+    conn, cursor = Cliente.conectarDb()
 
-    # obter usuario pelo id
-    for c in CLIENTES:
-        if c['id'] == cliente_id:
-            c['nome'] = data['nome']
-            c['email'] = data['email']
+    cursor.execute('SELECT * from clientes')
+    resultados = cursor.fetchall()
+    
+    ################# FAZER UM UPDATE EM CLIENTE.PY ATUALIZAR CLIENTE
 
-            cliente_editado = c
+    # for c in resultados:
+    #     if c['id'] == cliente_id:
+    #         c['nome'] = data['nome']
+    #         c['email'] = data['email']
+
+    # cliente = Cliente.verCliente(cliente_id)
+    cliente_editado = c
+   
     # editar o usuario
     return render_template('item_cliente.html', cliente=cliente_editado)
 

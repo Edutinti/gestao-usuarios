@@ -25,5 +25,15 @@ class Cliente():
         conn.commit()
         conn.close()
 
+    def verCliente(cliente_id):
+        conn = sqlite3.connect('customermanager.db')
+        conn.row_factory = sqlite3.Row 
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM clientes WHERE id = ?', (cliente_id,))
+        consulta = cursor.fetchone()
+        conn.close()
+
+        return consulta
+
     
 
