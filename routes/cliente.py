@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request
-from database.cliente import CLIENTES
 from database.models.cliente import Cliente
 
 
@@ -71,7 +70,12 @@ def form_cliente():
 def detalhe_cliente(cliente_id):
     """exibir detalhes de cliente"""
 
-    cliente = list(filter(lambda c: c['id'] == cliente_id, CLIENTES))[0]
+    conn, cursor = Cliente.conectarDb()
+    cursor.execute('SELECT * FROM clientes WHERE id = ?', (cliente_id,))
+    cliente = cursor.fetchone()
+
+    print(cliente_id)
+    
 
     return render_template('detalhe_cliente.html', cliente=cliente)
 

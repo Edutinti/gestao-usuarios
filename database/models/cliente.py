@@ -9,6 +9,7 @@ class Cliente():
     @staticmethod
     def conectarDb():
         conn = sqlite3.connect('customermanager.db')
+        conn.row_factory = sqlite3.Row 
         cursor = conn.cursor()
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, email TEXT NOT NULL)")
@@ -23,3 +24,6 @@ class Cliente():
             "INSERT INTO clientes (nome, email) VALUES (?, ?)", (self.nome, self.email))
         conn.commit()
         conn.close()
+
+    
+
