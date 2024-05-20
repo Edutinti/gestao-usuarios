@@ -9,7 +9,7 @@ class Cliente():
     @staticmethod
     def conectarDb():
         conn = sqlite3.connect('customermanager.db')
-        conn.row_factory = sqlite3.Row 
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, email TEXT NOT NULL)")
@@ -27,7 +27,7 @@ class Cliente():
 
     def verCliente(cliente_id):
         conn = sqlite3.connect('customermanager.db')
-        conn.row_factory = sqlite3.Row 
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM clientes WHERE id = ?', (cliente_id,))
         consulta = cursor.fetchone()
@@ -35,5 +35,16 @@ class Cliente():
 
         return consulta
 
-    
+    def atualizarCliente(nome, email, cliente_id):
+        conn = sqlite3.connect('customermanager.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            'UPDATE clientes SET nome = ?, email = ? WHERE id = ?', (nome, email, cliente_id))
+        conn.commit()
+        cursor.execute(
+            'SELECT * FROM clientes WHERE id = ?', (cliente_id,))
+        atualizado = cursor.fetchone()
+        conn.close()
 
+        return atualizado

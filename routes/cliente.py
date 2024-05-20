@@ -26,7 +26,6 @@ def lista_cliente():
     cursor.execute(consulta)
 
     resultados = cursor.fetchall()
-    print(resultados)
 
     # Convertendo tuplas em dicionários
     colunas = [desc[0] for desc in cursor.description]
@@ -69,10 +68,8 @@ def form_cliente():
 @cliente_route.route('/<int:cliente_id>')
 def detalhe_cliente(cliente_id):
     """exibir detalhes de cliente"""
-    
-    Cliente.conectarDb()
+
     cliente = Cliente.verCliente(cliente_id)
-    
 
     return render_template('detalhe_cliente.html', cliente=cliente)
 
@@ -88,24 +85,14 @@ def form_edit_cliente(cliente_id):
 @cliente_route.route('/<int:cliente_id>/update', methods=['PUT'])
 def atualizar_cliente(cliente_id):
     """atualizar informacoes do cliente"""
-    cliente_editado = None
+
     # obter dados form de edição
     data = request.json
-    conn, cursor = Cliente.conectarDb()
+    nome = data.get('nome')
+    email = data.get('email')
 
-    cursor.execute('SELECT * from clientes')
-    resultados = cursor.fetchall()
-    
-    ################# FAZER UM UPDATE EM CLIENTE.PY ATUALIZAR CLIENTE
+    cliente_editado = Cliente.atualizarCliente(nome, email, cliente_id)
 
-    # for c in resultados:
-    #     if c['id'] == cliente_id:
-    #         c['nome'] = data['nome']
-    #         c['email'] = data['email']
-
-    # cliente = Cliente.verCliente(cliente_id)
-    cliente_editado = c
-   
     # editar o usuario
     return render_template('item_cliente.html', cliente=cliente_editado)
 
