@@ -48,3 +48,10 @@ class Cliente():
         conn.close()
 
         return atualizado
+
+    def deletarCliente(cliente_id):
+        conn = sqlite3.connect('customermanager.db')
+        cursor = conn.cursor()
+        cursor.execute(
+            'DELETE FROM clientes WHERE id = ?', (cliente_id,))
+        conn.commit()

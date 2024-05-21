@@ -100,7 +100,7 @@ def atualizar_cliente(cliente_id):
 @cliente_route.route('/<int:cliente_id>/delete', methods=['DELETE'])
 def deletar_cliente(cliente_id):
     """deletar cliente"""
-    global CLIENTES
-    CLIENTES = [c for c in CLIENTES if c['id'] != cliente_id]
 
-    return 's'
+    Cliente.deletarCliente(cliente_id)
+
+    
